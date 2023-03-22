@@ -1,0 +1,97 @@
+.field {
+    height: 80%;
+    aspect-ratio: 1/1;
+    background-image: url("src/assets/dotamap5_25.jpg");
+    background-size:contain;
+}
+
+.field__row {
+    height: 6.25%;
+    aspect-ratio: 16/1;
+    display: table;
+    flex-direction: row;
+}
+
+.field__cell {
+    height: 100%;
+    width: 6.25%;
+    border-style: solid;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 100%;
+    font-weight: 600;
+    font-family: Arial;
+}
+
+.field__cell--mined {
+    background-size: contain;
+    background-image: url("src/assets/mine.png");
+}
+
+.field__cell--blue {
+    color: blue;
+}
+
+.field__cell--green {
+    color: green;
+}
+
+.field__cell--red {
+    color: red;
+}
+
+.field__cell--darkblue {
+    color: darkblue;
+}
+
+.field__cell--darkred {
+    color: darkred
+}
+
+.field__cell--turquoise {
+    color: turquoise;
+}
+
+.field__cell--black {
+    color: black
+}
+
+.field__cell--gray {
+    color: gray
+}
+
+.field__cell--opened {
+    /*background-color: rgba(160, 160, 160, 0.82);*/
+}
+
+.App {
+    display: flex;
+    flex-direction: row;
+    background-image:url("src/assets/valley.jpg");
+    background-size: cover;
+    height: 100vh;
+    width: 100vw
+}
+
+.top-panel {
+    height: 15%;
+
+    background-size:contain;
+    background-repeat: no-repeat;
+}
+.game{
+    width:60%
+}
+.timer{
+    background-image:url("src/assets/Dotatimer.png");
+    position:absolute;
+    z-index: 999;
+    height: 118px;
+    width:71px;
+    background-size: contain;
+    left:500px;
+    background-repeat: no-repeat;
+    text-align:center;
+    color:white;
+}
