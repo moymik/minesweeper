@@ -40,11 +40,13 @@ const Cell = ({cellData, handleCellClick}: CellProps) => {
         if (cellData.hasMine) {
             return <td onClick={() => {
                 handleCellClick(cellData)
-            }} className={"field__cell field__cell--mined"}></td>
+            }} className={"field__cell field__cell--mined"}>
+                </td>
         } else {
             return <td onClick={() => {
                 handleCellClick(cellData)
-            }} className={`field__cell ${determineTextStyle(cellData.nearestMinesCounter)} field__cell--opened`} >{cellData.nearestMinesCounter?cellData.nearestMinesCounter:""}</td>
+            }} className={`field__cell ${determineTextStyle(cellData.nearestMinesCounter)} field__cell--opened`} >{cellData.nearestMinesCounter?cellData.nearestMinesCounter:""}
+            </td>
         }
     }
 };
