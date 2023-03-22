@@ -84,7 +84,7 @@
     width:60%
 }
 .timer{
-    background-image:url("src/assets/Dotatimer.png");
+    background-image:url("src/assets/Dotatimer-removebg-preview.png");
     position:absolute;
     z-index: 999;
     height: 118px;

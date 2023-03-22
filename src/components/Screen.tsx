@@ -7,7 +7,7 @@ interface ScreenProps {
 const Screen = (props: ScreenProps) => {
     return (
         <div>
-            {props.value}
+
         </div>
     );
 };
