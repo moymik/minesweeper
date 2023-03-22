@@ -1,7 +1,7 @@
 .field {
     height: 80%;
     aspect-ratio: 1/1;
-    background-image: url("src/assets/dotamap5_25.jpg");
+    background-image: url("./assets/dotamap5_25.jpg");
     background-size:contain;
 }
 
@@ -26,7 +26,7 @@
 
 .field__cell--mined {
     background-size: contain;
-    background-image: url("src/assets/mine.png");
+    background-image: url("./assets/mine.png");
 }
 
 .field__cell--blue {
@@ -68,7 +68,7 @@
 .App {
     display: flex;
     flex-direction: row;
-    background-image:url("src/assets/valley.jpg");
+    background-image:url("./assets/valley.jpg");
     background-size: cover;
     height: 100vh;
     width: 100vw
@@ -84,7 +84,7 @@
     width:60%
 }
 .timer{
-    background-image:url("src/assets/Dotatimer-removebg-preview.png");
+    background-image:url("./assets/Dotatimer-removebg-preview.png");
     position:absolute;
     z-index: 999;
     height: 118px;
