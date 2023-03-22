@@ -22,6 +22,10 @@
     font-size: 100%;
     font-weight: 600;
     font-family: Arial;
+    text-shadow: 2px 0 2px #000,
+    0 2px 2px #000,
+    2px 0 2px #000,
+    0 2px 2px #000;
 }
 
 .field__cell--mined {
