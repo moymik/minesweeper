@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {CellData, CellCoordinates, FieldData} from "../Types";
 import Field from "./Field";
 import {getNeighboursCoordinates, initEmptyField, initFilledField} from "../helpers/helpers";
@@ -6,14 +6,27 @@ import Cell from "./Cell";
 import field from "./Field";
 import TopPanel from "./TopPanel";
 import Timer from "./Timer";
+import bom from "../assets/BOMBOM.m4a"
+import bombs from "../assets/bombs.mp4";
+import {loadFull} from "tsparticles"
+import Particles from "react-particles";
+import {loadSlim} from "tsparticles-slim";
+import {Engine} from "tsparticles-engine";
+import {Container} from "react-dom";
+import WinScreen from "./WinScreen";
+import FlagCounter from "./FlagCounter";
 
 function Game() {
     const [fieldData, setFieldData] = useState<FieldData>(initEmptyField())
+    //gamestatus setGameStatus "won lost started ...."
     const [gameStarted, setGameStarted] = useState<boolean>(false)
     const [gameLost, setGameLost] = useState<boolean>(false)
+    const [gameWon, setGameWon] = useState<boolean>(false)
     const [timer, setTimer] = useState<number>(0)
     const [timerId, setTimerId] = useState<number>(0)
     const [flagsCounter, setFlagsCounter] = useState<number>(0);
+
+    let bombsVid = bombs
 
 
     useEffect(() => {
@@ -31,41 +44,94 @@ function Game() {
     }, [gameStarted])
 
     function handleCellClick(cellData: CellData): void {
+
         if (!gameStarted) {
             let generatedFieldData = initFilledField({x: cellData.coordinates.x, y: cellData.coordinates.y})
             setFieldData(generatedFieldData)
             setGameStarted(true)
 
         }
-        makeMove(cellData, fieldData);
+        if (!cellData.hasFlag) makeMove(cellData, fieldData);
     }
 
-    /*function handleRightClick(cellData: CellData): void {
+    function changeFlagStatus(cellData: CellData): void {
         if (gameStarted) {
             setFieldData((fieldData: CellData[][]) => {
                 return [...fieldData.map(rowData => {
                     return rowData.map(currentCellData => {
                         return {
                             ...currentCellData,
-                            isFlagged:(currentCellData === cellData) ? !currentCellData.isOpened : currentCellData.isOpened
+                            hasFlag: (currentCellData === cellData) ? !currentCellData.hasFlag : currentCellData.hasFlag
                         }
                     })
                 })]
             })
         }
     }
--*/
+
+    function handleCellRightClick(cellData: CellData): void {
+        if (gameStarted) {
+            if (!cellData.isOpened) {
+                changeFlagStatus(cellData);
+            }
+        }
+    }
+
+    function countOpenedCells(fieldData: FieldData): number {
+        let counter = 0;
+        fieldData.forEach((row: CellData[]) => {
+            row.forEach((cell: CellData) => {
+                if (cell.isOpened) counter++
+            })
+        })
+        return counter;
+    }
+
+    /*
+        function handleRightClick(cellData: CellData): void {
+            if (gameStarted) {
+                setFieldData((fieldData: CellData[][]) => {
+                    return [...fieldData.map(rowData => {
+                        return rowData.map(currentCellData => {
+                            if(currentCellData==cellData) console.log(1);
+                            return {
+                                ...currentCellData,
+                                isFlagged:(currentCellData === cellData)
+                            }
+                        })
+                    })]
+                })
+            }
+        }
+    */
     function makeMove(chosenCellData: CellData, fieldData: FieldData): void {
         if (chosenCellData.hasMine) {
             setGameLost(true)
             clearInterval(timerId);
-            setFieldData((fieldData) => openAllCells(fieldData))
+            let audio = new Audio(bom);
+            audio.setAttribute("loop", "loop")
+            audio.play();
+            /* let minedCells = []
+             fieldData.forEach((rowData:CellData[])=>{
+                 rowData.forEach((cellData: CellData)=>{
+                   if(cellData.hasMine)minedCells.push(cellData.coordinates);
+                 })
+             })*/
+
+            setFieldData((fieldData) => {
+                return openAllCells(fieldData)
+            });
 
         } else {
+            if (countOpenedCells(fieldData) === fieldData.length * fieldData.length - 41) {
+                setGameWon(true);
+            }
             setFieldData((fieldData) => {
                 return openArea(chosenCellData, fieldData)
             });
+
         }
+
     }
 
     function openAllCells(fieldData: FieldData): FieldData {
@@ -127,13 +193,21 @@ function Game() {
     }
 
 
-    return (
-        <div  className={"game"}>
-            <Timer  timerValue={timer}></Timer>
-            <TopPanel minesCounter={flagsCounter} timerValue={timer}></TopPanel>
-            <Field fieldData={fieldData} handleCellClick={handleCellClick} />
-        </div>
-    );
+const options = {
+    preset: "fireworks",
 };
+
+if (gameWon) return <WinScreen></WinScreen>
+else return (
+    <div className={"game"}>
+        <FlagCounter fieldData = {fieldData}></FlagCounter>
+        <Timer timerValue={timer}></Timer>
+        <TopPanel minesCounter={flagsCounter} timerValue={timer}></TopPanel>
+        <Field bombsVid={bombsVid} gameLost={gameLost} fieldData={fieldData} handleCellClick={handleCellClick}
+               handleCellRightClick={handleCellRightClick}/>
+    </div>
+);
+}
+;
 
 export default Game;

@@ -1,13 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {ReactElement, useEffect, useRef} from 'react';
 import {CellData} from "../Types";
+import bombs from "../assets/bombs.mp4"
+import ReactDOM from "react-dom/client";
 
 interface CellProps {
+    bombsVid: string
     cellData: CellData
     handleCellClick: (cellData: CellData) => void
+    handleCellRightClick: (cellData: CellData) => void
+    gameLost: boolean
 }
 
-function determineTextStyle(minesCounter:number){
-    switch (minesCounter){
+function determineTextStyle(minesCounter: number) {
+    switch (minesCounter) {
         case 0:
             return "field__cell--black"
         case 1:
@@ -29,26 +34,32 @@ function determineTextStyle(minesCounter:number){
     }
 }
 
-const Cell = ({cellData, handleCellClick}: CellProps) => {
-
-    let cellElement = <td onClick={() => {
-        handleCellClick(cellData)
-    }} className={"field__cell field__cell--closed"}></td>
+const Cell = ({bombsVid, gameLost, cellData, handleCellClick, handleCellRightClick}: CellProps) => {
+    let className = "field__cell";
     if (!cellData.isOpened) {
-        return cellElement;
-    } else {
-        if (cellData.hasMine) {
-            return <td onClick={() => {
-                handleCellClick(cellData)
-            }} className={"field__cell field__cell--mined"}>
-                </td>
-        } else {
-            return <td onClick={() => {
-                handleCellClick(cellData)
-            }} className={`field__cell ${determineTextStyle(cellData.nearestMinesCounter)} field__cell--opened`} >{cellData.nearestMinesCounter?cellData.nearestMinesCounter:""}
-            </td>
-        }
+        className += " field__cell--closed"
+        if (cellData.hasFlag) className += " field__cell--hasFlag"
     }
+    if (cellData.isOpened && cellData.hasMine) className += " field__cell--mined"
+    if (cellData.isOpened && !cellData.hasMine) className += ` field__cell--opened ${determineTextStyle(cellData.nearestMinesCounter)}`
+    let lol = useRef(null);
+    let bombsE = <video ref = {lol} src={bombsVid} autoPlay={false} width={"100%"} height={"100%"} className={"field__cell--bomb_video"}></video>;
+    if (gameLost && cellData.hasMine) {
+        let startTime = Math.random() * 34 * 1000;
+        setTimeout(()=>{console.log(1);if(lol.current)lol.current.play()},startTime);
+        return <td className={"field__cell"} >{bombsE}</td>
+    }
+
+    return <td
+        onContextMenu={(e) => {
+            e.preventDefault()
+            handleCellRightClick(cellData)
+        }}
+        onClick={() => {
+            handleCellClick(cellData)
+        }}
+        className={className}>{cellData.nearestMinesCounter && cellData.isOpened && !cellData.hasMine ? cellData.nearestMinesCounter : ""}</td>
+
 };
 
 export default Cell;

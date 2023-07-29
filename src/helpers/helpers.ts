@@ -32,7 +32,7 @@ export function initFilledField(forbiddenCoordinates: { x: number, y: number }):
             && !(forbiddenCoordinates.x === currentX && forbiddenCoordinates.y === currentY)) {
             i++;
             fieldData[currentX][currentY].hasMine = true;
-
+           // fieldData[currentX][currentY].hasFlag = true;//test
             //increasing the nearestMinesCounters properties of adjacent cells
             let neighboursCoordinates = getNeighboursCoordinates({x: currentX, y: currentY});
             neighboursCoordinates.forEach(coordinates => {
