@@ -1,9 +1,10 @@
 import React, {useCallback} from "react";
-import {Engine} from "tsparticles-engine";
+import {Engine,Container} from "tsparticles-engine";
 import {loadFull} from "tsparticles";
-import {Container} from "react-dom";
+
 import Particles from "react-particles";
 import bom from "../assets/BOMBOM.m4a";
+
 
 const WinScreen = (() => {
     let audio = new Audio(bom);
@@ -21,7 +22,7 @@ const WinScreen = (() => {
     const winPhrases = ["ПОЗДРАВЛЯЮ", "МАШИНА", "ТЫ ПОБЕДИЛ", "ТЕЧИЗ В ТИЛЬТЕ", "РЕСПЕКТ", "МОЁ УВОЖЕНИЕ"]
     const phrase = winPhrases[Math.floor(Math.random()*6)]
 
-    const particlesLoaded = useCallback(async (container: Container | undefined) => {
+    const particlesLoaded = useCallback(async (container?:Container|undefined) => {
         await console.log(container);
 
     }, []);
