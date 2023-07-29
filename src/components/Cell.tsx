@@ -43,7 +43,7 @@ const Cell = ({bombsVid, gameLost, cellData, handleCellClick, handleCellRightCli
     if (cellData.isOpened && cellData.hasMine) className += " field__cell--mined"
     if (cellData.isOpened && !cellData.hasMine) className += ` field__cell--opened ${determineTextStyle(cellData.nearestMinesCounter)}`
     let lol:any = useRef(null);
-    let bombsE = <video ref = {lol} src={bombsVid} autoPlay={false} width={"100%"} height={"100%"} className={"field__cell--bomb_video"}></video>;
+    let bombsE = <video ref = {lol} src={bombsVid} autoPlay={false} width={"97%"} height={"97%"} className={"field__cell--bomb_video"}></video>;
     if (gameLost && cellData.hasMine) {
         let startTime = Math.random() * 34 * 1000;
         setTimeout(()=>{if(lol.current)lol.current.play()},startTime);
