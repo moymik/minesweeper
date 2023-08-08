@@ -123,11 +123,13 @@ function Game() {
             });
 
         } else {
-            if (countOpenedCells(fieldData) === fieldData.length * fieldData.length - 41) {
-                setGameWon(true);
-            }
+
             setFieldData((fieldData) => {
-                return openArea(chosenCellData, fieldData)
+                let result = openArea(chosenCellData, fieldData)
+                if (countOpenedCells(result) === fieldData.length * fieldData[0].length - 40) {
+                    setGameWon(true);
+                }
+                return result
             });
 
         }
@@ -193,20 +195,20 @@ function Game() {
     }
 
 
-const options = {
-    preset: "fireworks",
-};
+    const options = {
+        preset: "fireworks",
+    };
 
-if (gameWon) return <WinScreen></WinScreen>
-else return (
-    <div className={"game"}>
-        <FlagCounter fieldData = {fieldData}></FlagCounter>
-        <Timer timerValue={timer}></Timer>
-        <TopPanel minesCounter={flagsCounter} timerValue={timer}></TopPanel>
-        <Field bombsVid={bombsVid} gameLost={gameLost} fieldData={fieldData} handleCellClick={handleCellClick}
-               handleCellRightClick={handleCellRightClick}/>
-    </div>
-);
+    if (gameWon) return <WinScreen></WinScreen>
+    else return (
+        <div className={"game"}>
+            <FlagCounter fieldData={fieldData}></FlagCounter>
+            <Timer timerValue={timer}></Timer>
+            <TopPanel minesCounter={flagsCounter} timerValue={timer}></TopPanel>
+            <Field bombsVid={bombsVid} gameLost={gameLost} fieldData={fieldData} handleCellClick={handleCellClick}
+                   handleCellRightClick={handleCellRightClick}/>
+        </div>
+    );
 }
 ;
 
